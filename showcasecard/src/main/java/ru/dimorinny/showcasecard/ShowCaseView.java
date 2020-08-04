@@ -83,6 +83,11 @@ public class ShowCaseView extends FrameLayout {
      */
     private boolean hideCard = false;
 
+    /**
+     * Indicates whether click events on views inside the showcase circle should be triggered.
+     */
+    private boolean enableClickInCircle = true;
+
     public ShowCaseView(Context context) {
         super(context);
 
@@ -344,7 +349,7 @@ public class ShowCaseView extends FrameLayout {
             }
             hide();
         }
-        return !isTouchInCircle(event);
+        return !enableClickInCircle || !isTouchInCircle(event);
     }
 
     public void show(final ViewGroup container) {
@@ -446,6 +451,7 @@ public class ShowCaseView extends FrameLayout {
         private ShowCasePosition position = new Position(
                 new PointF(0F, 0F)
         );
+        private boolean enableClickInCircle = true;
 
         public Builder(Context context) {
             this.context = context;
@@ -495,6 +501,17 @@ public class ShowCaseView extends FrameLayout {
             return this;
         }
 
+        /**
+         * Set whether click events on views inside the showcase circle should be triggered. True
+         * by default.
+         *
+         * @param enable
+         */
+        public Builder setEnableClickInCircle(boolean enable) {
+            this.enableClickInCircle = enable;
+            return this;
+        }
+
         public ShowCaseView build() {
             ShowCaseView view = new ShowCaseView(context);
             view.dismissListener = this.dismissListener;
@@ -503,6 +520,7 @@ public class ShowCaseView extends FrameLayout {
             view.dismissOnTouch = this.dismissOnTouch;
             view.touchListener = this.touchListener;
             view.overlayPaint.setColor(ContextCompat.getColor(context, this.color));
+            view.enableClickInCircle = this.enableClickInCircle;
 
             if (this.contentView != null && contentText != null) {
                 view.setContent(this.contentView, this.contentText);

@@ -32,6 +32,8 @@ public class ShowCaseStepDisplayer {
 
     private float showCaseRadius;
 
+    private boolean enableClickInCircle = true;
+
     /**
      * All items to be displayed.
      */
@@ -151,6 +153,7 @@ public class ShowCaseStepDisplayer {
                 .withTypedPosition(item.getPosition())
                 .withTypedRadius(new Radius(showCaseRadius))
                 .dismissOnTouch(false)
+                .setEnableClickInCircle(enableClickInCircle)
                 .withTouchListener(() -> {
 
                     if (myTipIndex == currentlyDisplayedTipIndex) {
@@ -193,6 +196,17 @@ public class ShowCaseStepDisplayer {
     }
 
     /**
+     * Set whether click events on views inside the showcase circle should be triggered. True
+     * by default.
+     *
+     * @param enable
+     */
+    @SuppressWarnings("unused")
+    public void setEnableClickInCircle(boolean enable) {
+        this.enableClickInCircle = enable;
+    }
+
+    /**
      * Returns true if the attached Context is still active / not shutting down.
      */
     private boolean isContextActive() {
@@ -218,6 +232,8 @@ public class ShowCaseStepDisplayer {
         private ScrollView scrollView;
 
         private List<ShowCaseStep> items = new ArrayList<>();
+
+        private boolean enableClickInCircle = true;
 
         @SuppressWarnings("unused")
         public Builder(@NonNull Fragment fragment) {
@@ -249,6 +265,18 @@ public class ShowCaseStepDisplayer {
             return this;
         }
 
+        /**
+         * Set whether click events on views inside the showcase circle should be triggered. True
+         * by default.
+         *
+         * @param enable
+         */
+        @SuppressWarnings("unused")
+        public Builder setEnableClickInCircle(boolean enable) {
+            this.enableClickInCircle = enable;
+            return this;
+        }
+
         @SuppressWarnings("unused")
         public ShowCaseStepDisplayer build() {
 
@@ -256,6 +284,7 @@ public class ShowCaseStepDisplayer {
                     new ShowCaseStepDisplayer(activity, fragment, scrollView);
 
             stepController.setSteps(items);
+            stepController.setEnableClickInCircle(enableClickInCircle);
 
             return stepController;
         }
